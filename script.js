@@ -659,3 +659,143 @@
   });
 
 })();
+
+// Decklist
+document.addEventListener("DOMContentLoaded", () => {
+    const decklistElements = document.querySelectorAll(".decklist");
+
+    decklistElements.forEach((decklistElement) => {
+        const decklistText = decklistElement.innerHTML.replace(/<br>/g, "\n");
+
+        const parseDecklist = (text) => {
+            const lines = text.split("\n").map((line) => line.trim());
+            const parsedLines = [];
+            let currentSection = "";
+            const sectionTotals = {};
+
+            lines.forEach((line) => {
+                if (line.endsWith(":")) {
+                    currentSection = line.slice(0, -1);
+                    sectionTotals[currentSection] = 0;
+                } else if (line && !line.startsWith("Title:")) {
+                    const [quantity, ...cardNameParts] = line.split(" ");
+                    const quantityNum = parseInt(quantity, 10);
+                    if (!isNaN(quantityNum)) {
+                        sectionTotals[currentSection] += quantityNum;
+                    }
+                    parsedLines.push({ section: currentSection, cardLine: line });
+                }
+            });
+
+            return { parsedLines, sectionTotals };
+        };
+
+        const { parsedLines, sectionTotals } = parseDecklist(decklistText);
+
+        // Create decklist container
+        const container = document.createElement("div");
+        container.className = "decklist-container";
+
+        // Create cards columns
+        const cardsColumns = document.createElement("div");
+        cardsColumns.className = "cards-columns";
+
+        // Create preview column
+        const previewColumn = document.createElement("div");
+        previewColumn.className = "preview-column";
+
+        // Create card preview
+        const preview = document.createElement("img");
+        preview.className = "card-preview";
+        preview.src = "https://gatherer.wizards.com/Handlers/Image.ashx?name=Magic%20Back&type=card";
+        preview.alt = "Card Preview";
+        preview.style.display = "none";
+
+        previewColumn.appendChild(preview);
+        container.appendChild(cardsColumns);
+        container.appendChild(previewColumn);
+
+        // Add deck title
+        const titleMatch = decklistText.match(/Title: (.+)/);
+        if (titleMatch) {
+            const titleElement = document.createElement("div");
+            titleElement.className = "deck-title";
+            titleElement.textContent = titleMatch[1];
+            cardsColumns.appendChild(titleElement);
+        }
+
+        let totalCards = 0;
+
+        // Add cards to the columns
+        parsedLines.forEach(({ section, cardLine }) => {
+            const [quantity, ...cardNameParts] = cardLine.split(" ");
+            const cardName = cardNameParts.join(" ");
+            const cardImageURL = `https://gatherer.wizards.com/Handlers/Image.ashx?name=${encodeURIComponent(cardName)}&type=card`;
+
+            const cardElement = document.createElement("div");
+            cardElement.className = "card-item";
+
+            if (section && !cardsColumns.querySelector(`[data-section='${section}']`)) {
+                const sectionHeader = document.createElement("div");
+                sectionHeader.className = "section-header";
+                sectionHeader.dataset.section = section;
+                sectionHeader.innerHTML = `${section} <span>${sectionTotals[section]} cards</span>`;
+                cardsColumns.appendChild(sectionHeader);
+            }
+
+            const quantityNum = parseInt(quantity, 10);
+            if (!isNaN(quantityNum)) {
+                totalCards += quantityNum;
+            }
+
+            cardElement.innerHTML = `
+                <a href="#" class="card-link" data-card="${cardImageURL}">
+                    ${quantity} ${cardName}
+                </a>
+            `;
+            cardsColumns.appendChild(cardElement);
+        });
+
+        // Add total cards count
+        const totalCardsElement = document.createElement("div");
+        totalCardsElement.className = "total-cards";
+        totalCardsElement.textContent = `Total Cards: ${totalCards}`;
+        cardsColumns.appendChild(totalCardsElement);
+
+        // Replace decklist element with the new container
+        decklistElement.replaceWith(container);
+
+        // Add hover and click functionality
+        document.body.addEventListener("mouseover", (e) => {
+            if (e.target.classList.contains("card-link")) {
+                const cardImageURL = e.target.dataset.card;
+                preview.src = cardImageURL;
+                preview.style.display = "block";
+            }
+        });
+
+        document.body.addEventListener("mouseout", (e) => {
+            if (e.target.classList.contains("card-link")) {
+                preview.style.display = "none";
+            }
+        });
+
+        document.body.addEventListener("click", (e) => {
+            if (e.target.classList.contains("card-link")) {
+                e.preventDefault();
+                const cardImageURL = e.target.dataset.card;
+                const popup = document.getElementById("card-popup");
+                popup.querySelector("img").src = cardImageURL;
+                popup.style.display = "block";
+            }
+        });
+
+        const popupClose = document.getElementById("card-popup-close");
+        if (popupClose) {
+            popupClose.addEventListener("click", () => {
+                const popup = document.getElementById("card-popup");
+                popup.style.display = "none";
+            });
+        }
+    });
+});
