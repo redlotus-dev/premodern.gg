@@ -4720,3 +4720,131 @@ zd-summary-block {
 [dir=rtl] zd-summary-block {
   border-right-color: #859fa1;
 }
+
+/* Decklist */
+.decklist-container {
+display: flex;
+max-width: 1200px;
+margin: 20px auto;
+padding: 20px;
+border: 2px solid #d3d3d3; /* Light gray border */
+border-radius: 8px;
+background: linear-gradient(135deg, #f8f8f8, #eaeaea, #dcdcdc); /* Light gray gradient */
+background-size: 300% 300%; /* Creates a flowing gradient effect */
+animation: gradientShift 10s ease infinite; /* Adds subtle movement to the gradient */
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+color: #333; /* Dark gray text for good contrast */
+}
+
+/* Optional: Animation for gradient shift */
+@keyframes gradientShift {
+0% {
+    background-position: 0% 50%;
+}
+50% {
+    background-position: 100% 50%;
+}
+100% {
+    background-position: 0% 50%;
+}
+}
+
+
+
+    .cards-columns {
+        flex: 2;
+        display: flex;
+        flex-wrap: wrap;
+        border-right: 2px solid #ccc;
+        padding-right: 20px;
+    }
+    .preview-column {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        position: relative;
+        padding-left: 20px;
+        border-left: 2px solid #ccc;
+    }
+    .section-header {
+        width: 100%;
+        font-weight: bold;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+    }
+    .card-item {
+        width: 50%;
+        padding: 5px;
+        color: rgb(0,0,255);
+    }
+    .card-link {
+        text-decoration: none;
+        color: blue;
+        cursor: pointer;
+    }
+
+    .article-body .card-link{
+      color: blue;
+    }
+    #card-preview {
+        width: 250px;
+        height: 350px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: none;
+        z-index: 1000;
+    }
+    #card-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border: 1px solid black;
+        display: none;
+        z-index: 1000;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    #card-popup img {
+        max-width: 100%;
+    }
+    #card-popup-close {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+        color: red;
+    }
+    .total-cards {
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: right;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
+    .deck-title {
+        font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #444;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+        .preview-column {
+            display: none; /* Hide preview column on mobile */
+        }
+        #card-popup {
+            display: block; /* Ensure popup is always available */
+        }
+    }
