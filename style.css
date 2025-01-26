@@ -4811,6 +4811,8 @@ color: #333; /* Dark gray text for good contrast */
         z-index: 1000;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none;
+
     }
     #card-popup img {
         max-width: 100%;
@@ -4845,6 +4847,6 @@ color: #333; /* Dark gray text for good contrast */
             display: none; /* Hide preview column on mobile */
         }
         #card-popup {
-            display: block; /* Ensure popup is always available */
+            display: none; /* Ensure popup is always hidden at start */
         }
     }
