@@ -660,6 +660,10 @@
 
 })();
 
+function getCardImageURL(cardName) {
+  return `https://gatherer.wizards.com/Handlers/Image.ashx?name=${encodeURIComponent(cardName)}&type=card`;
+}
+
 // Decklist
 document.addEventListener("DOMContentLoaded", () => {
     const decklistElements = document.querySelectorAll(".decklist");
@@ -730,7 +734,7 @@ document.addEventListener("DOMContentLoaded", () => {
         parsedLines.forEach(({ section, cardLine }) => {
             const [quantity, ...cardNameParts] = cardLine.split(" ");
             const cardName = cardNameParts.join(" ");
-            const cardImageURL = `https://gatherer.wizards.com/Handlers/Image.ashx?name=${encodeURIComponent(cardName)}&type=card`;
+            const cardImageURL = getCardImageURL(cardName);
 
             const cardElement = document.createElement("div");
             cardElement.className = "card-item";
@@ -798,4 +802,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
+});
+
+// mtg-card-popup
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("mtg-card")) {
+      console.log("click");
+        const popup = document.getElementById("card-popup");
+        const cardImage = getCardImageURL(e.target.textContent);
+        const cardPopupImage = document.querySelector("#card-popup img");
+
+        cardPopupImage.src = cardImage;
+        popup.style.display = "block";
+
+    }
 });
