@@ -818,4 +818,11 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// mtg-card-popup close
+document.addEventListener("click", (e) => {
+    if (e.target.id === "card-popup-close") {
+        document.getElementById("card-popup").style.display = "none";
+    }
+});
+
 
