@@ -4913,7 +4913,6 @@ color: #333; /* Dark gray text for good contrast */
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 10px;
 }
 
 /* Style for the author image */

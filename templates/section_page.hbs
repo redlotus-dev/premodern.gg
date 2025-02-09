@@ -40,62 +40,99 @@
 
       {{pagination "section.sections"}}
 
-{{#if section.articles}}
-  <ul class="article-list">
-    {{#each section.articles}}
-      <li class="article-list-item {{#if promoted}} article-promoted{{/if}}">
-        <div class="article-item-wrapper">
-          <!-- Left Column: Promoted Star Icon -->
-          <div class="promoted-icon">
-            {{#if promoted}}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" focusable="false" viewBox="0 0 12 12" class="icon-star" title="{{t 'promoted'}}">
-                <path fill="currentColor" d="M2.88 11.73c-.19 0-.39-.06-.55-.18a.938.938 0 01-.37-1.01l.8-3L.35 5.57a.938.938 0 01-.3-1.03c.12-.37.45-.63.85-.65L4 3.73 5.12.83c.14-.37.49-.61.88-.61s.74.24.88.6L8 3.73l3.11.17a.946.946 0 01.55 1.68L9.24 7.53l.8 3a.95.95 0 01-1.43 1.04L6 9.88l-2.61 1.69c-.16.1-.34.16-.51.16z"/>
-              </svg>
-            {{/if}}
-          </div>
-
-          <!-- Right Column: Article Content -->
-          <div class="article-content-wrapper">
-            <a href="{{url}}" class="article-list-link">
-              <div class="article-item">
-                <!-- Author Avatar -->
-                <div class="article-image">
-                  <img src="{{author.avatar_url}}" alt="{{author.name}} avatar">
+      {{#if section.articles}}
+        <ul class="article-list">
+          {{#each section.articles}}
+            <li class="article-list-item {{#if promoted}} article-promoted{{/if}}">
+              <div class="article-item-wrapper">
+                <!-- Left Column: Promoted Star Icon -->
+                <div class="promoted-icon">
+                  {{#if promoted}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" focusable="false" viewBox="0 0 12 12" class="icon-star" title="{{t 'promoted'}}">
+                      <path fill="currentColor" d="M2.88 11.73c-.19 0-.39-.06-.55-.18a.938.938 0 01-.37-1.01l.8-3L.35 5.57a.938.938 0 01-.3-1.03c.12-.37.45-.63.85-.65L4 3.73 5.12.83c.14-.37.49-.61.88-.61s.74.24.88.6L8 3.73l3.11.17a.946.946 0 01.55 1.68L9.24 7.53l.8 3a.95.95 0 01-1.43 1.04L6 9.88l-2.61 1.69c-.16.1-.34.16-.51.16z"/>
+                    </svg>
+                  {{/if}}
                 </div>
-                <!-- Article Title and Meta Info -->
-                <div class="article-content">
-                  <h3 class="article-title">{{title}}</h3>
-                  <div class="article-meta">
-                      <span class="article-author">{{author.name}} | <span class="formatted-date">{{created_at}}}</span></span>
-                  </div>
+
+                <!-- Right Column: Article Content -->
+                <div class="article-content-wrapper">
+                  <a href="{{url}}" class="article-list-link">
+                    <div class="article-item">
+                      <!-- Author Avatar -->
+                      <div class="article-image">
+                        <img src="{{author.avatar_url}}" alt="{{author.name}} avatar">
+                      </div>
+                      <!-- Article Title and Meta Info -->
+                      <div class="article-content">
+                        <h3 class="article-title">{{title}}</h3>
+                        <div class="article-meta">
+                            <span class="article-author">{{author.name}} | <span class="formatted-date">{{created_at}}}</span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                  <!-- Internal Lock Icon, if applicable -->
+                  {{#if internal}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" focusable="false" viewBox="0 0 16 16" class="icon-lock" title="{{t 'internal'}}">
+                      <rect width="12" height="9" x="2" y="7" fill="currentColor" rx="1" ry="1"/>
+                      <path fill="none" stroke="currentColor" d="M4.5 7.5V4a3.5 3.5 0 017 0v3.5"/>
+                    </svg>
+                  {{/if}}
                 </div>
               </div>
-            </a>
-            <!-- Internal Lock Icon, if applicable -->
-            {{#if internal}}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" focusable="false" viewBox="0 0 16 16" class="icon-lock" title="{{t 'internal'}}">
-                <rect width="12" height="9" x="2" y="7" fill="currentColor" rx="1" ry="1"/>
-                <path fill="none" stroke="currentColor" d="M4.5 7.5V4a3.5 3.5 0 017 0v3.5"/>
-              </svg>
-            {{/if}}
-          </div>
-        </div>
-      </li>
-    {{/each}}
-  </ul>
-{{else}}
-  <i class="section-empty">
-    <a href="{{section.url}}">{{t 'empty'}}</a>
-  </i>
-{{/if}}
-
-
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <i class="section-empty">
+          <a href="{{section.url}}">{{t 'empty'}}</a>
+        </i>
+      {{/if}}
 
       {{pagination "section.articles"}}
-
     </section>
   </div>
 </div>
+
+<style>
+  /* ---- 2-Column Layout for Articles ---- */
+  .article-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none; /* Remove bullets */
+    margin: 0;
+    padding: 0;
+    gap: 1rem; /* Spacing between columns/items */
+  }
+
+  .article-list-item {
+    flex: 1 1 calc(50% - 1rem); /* 2 columns in a row */
+    box-sizing: border-box;
+
+    /* Light gray background & border */
+    background-color: #2f3941;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 4px;
+
+    /* Hover transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Hover animation: slight "lift" and shadow */
+  .article-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive: stack in a single column on smaller screens */
+  @media (max-width: 767px) {
+    .article-list-item {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var dates = document.querySelectorAll('.formatted-date');
